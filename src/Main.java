@@ -1,13 +1,62 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-void main() {
-    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-    // to see how IntelliJ IDEA suggests fixing it.
-    IO.println(String.format("Hello and welcome!"));
+public class Main {
+    private static int passed = 0;
+    private static int total = 0;
+    public static void main(String[] args) {
+        if (args.length == 0 || !args[0].equals("--demo")) {
+            System.out.println("Usage: java -cp out Main --demo");
+            return;
+        }
+        runDemo();
+    }
 
-    for (int i = 1; i <= 5; i++) {
-        //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-        // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-        IO.println("i = " + i);
+    private static void runDemo() {
+        String reminderText = "Meeting at 10:00";
+        String alertText = "Server is down";
+        Reminder r1 = new Reminder(1, reminderText, new EmailChannel());
+        check("T1", "EMAIL: [envelope] Meeting at 10:00", r1.execute());
+        Reminder r2 = new Reminder(1, reminderText, new SmsChannel());
+        check("T2", "SMS: Meeting at 10:00", r2.execute());
+        UrgentAlert a1 = new UrgentAlert(2, alertText, new EmailChannel());
+        check("T3", "EMAIL: [envelope] URGENT: Server is down", a1.execute());
+        UrgentAlert a2 = new UrgentAlert(2, alertText, new SmsChannel());
+        check("T4", "SMS: URGENT: Server is down", a2.execute());
+        Reminder reminder = new Reminder(5, reminderText, new EmailChannel());
+        Reminder sameReminder = reminder;
+        String first = reminder.execute();
+        reminder.setImplementation(new SmsChannel());
+        String second = reminder.execute();
+        boolean sameObject = (reminder == sameReminder);
+        boolean sameId = reminder.getId() == 5;
+        boolean sameMessage = reminder.getMessage().equals(reminderText);
+        boolean firstOk = first.equals("EMAIL: [envelope] Meeting at 10:00");
+        boolean secondOk = second.equals("SMS: Meeting at 10:00");
+        checkBool("T5", sameObject && sameId && sameMessage && firstOk && secondOk,
+                "first=" + first + " | second=" + second + " | same object=" + sameObject);
+
+        System.out.println();
+        System.out.println("SUMMARY: " + passed + "/" + total + " PASS");
+    }
+
+    private static void check(String name, String expected, String actual) {
+        total++;
+        boolean ok = expected.equals(actual);
+        if (ok) {passed++;
+            System.out.println(name + " PASS");
+        } else {
+            System.out.println(name + " FAIL");
+        }
+        System.out.println("  expected: " + expected);
+        System.out.println("  actual:   " + actual);
+    }
+
+    private static void checkBool(String name, boolean ok, String info) {
+        total++;
+        if (ok) {
+            passed++;
+            System.out.println(name + " PASS");
+        } else {
+            System.out.println(name + " FAIL");
+        }
+        System.out.println("  " + info);
     }
 }
