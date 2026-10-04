@@ -32,7 +32,10 @@ public class Main {
         boolean secondOk = second.equals("SMS: Meeting at 10:00");
         checkBool("T5", sameObject && sameId && sameMessage && firstOk && secondOk,
                 "first=" + first + " | second=" + second + " | same object=" + sameObject);
-
+        Reminder r3 = new Reminder(6, reminderText, new PushChannel());
+        check("T6", "PUSH: [bell] Meeting at 10:00", r3.execute());
+        UrgentAlert a3 = new UrgentAlert(7, alertText, new PushChannel());
+        check("T7", "PUSH: [bell] URGENT: Server is down", a3.execute());
         System.out.println();
         System.out.println("SUMMARY: " + passed + "/" + total + " PASS");
     }
