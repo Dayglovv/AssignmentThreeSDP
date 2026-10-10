@@ -3,7 +3,7 @@
 - **Name:** Serekpayev ALi
 - **Group:** SE-2530
 - **Topic:** A (Drawing: Shape / Renderer)
-- **Repository:**
+- **Repository:**https://github.com/Dayglovv/AssignmentThreeSDP
 - **Base commit (working I1/I2 version):** `914ec7a5e65d97e3fe7734f4803d2fa2a94ee32a`
 - **I3 extension commit:** `775fb4e3abfc556dbbce453c3005970499ca1dcc` (final documentation commit hash is given in the Moodle text)
 
